@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elara Store - Christmas Special</title>
+    <style>
+        :root {
+            /* Palette Natal */
+            --xmas-red: #d63031;
+            --xmas-green: #009432; 
+            --xmas-gold: #f1c40f; /* Warna Emas untuk pengganti RGB */
+            --glass-bg: rgba(0, 0, 0, 0.85); /* Background hitam transparan untuk kotak saja agar tulisan terbaca */
+            --card-bg: #2d3436;
+            --text-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Background Gambar Original - Tanpa Overlay Biru */
+            background: url('https://uploader.zenzxz.dpdns.org/uploads/1766627272927.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* HAPUS body::before (Overlay Biru) agar gambar terang */
+
+        /* --- BINTANG-BINTANG (Tetap ada sesuai request) --- */
+        .stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .star-small, .star-medium, .star-large {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle 4s infinite;
+        }
+        .star-small { width: 2px; height: 2px; box-shadow: 10vw 10vh #fff, 20vw 40vh #fff, 80vw 80vh #fff; }
+        .star-medium { width: 3px; height: 3px; box-shadow: 15vw 15vh #fff, 65vw 15vh #fff, 85vw 85vh #fff; }
+        .star-large { width: 4px; height: 4px; box-shadow: 5vw 85vh #fff, 95vw 5vh #fff; }
+
+        @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* --- ANIMASI SANTA CLAUSE --- */
+        .santa-orbit-container {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 120%; height: 600px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            display: flex; justify-content: center; align-items: center;
+            perspective: 1000px;
+            z-index: 0;
+        }
+
+        .santa-sleigh {
+            width: 250px;
+            position: absolute;
+            animation: orbitSanta 20s linear infinite;
+        }
+
+        @media (max-width: 600px) { .santa-sleigh { width: 150px; } }
+
+        @keyframes orbitSanta {
+            0% { transform: translateX(-500px) translateZ(-200px) scale(0.5); z-index: 1; }
+            49% { z-index: 1; }
+            50% { transform: translateX(500px) translateZ(100px) scale(1); z-index: 300; }
+            99% { z-index: 300; }
+            100% { transform: translateX(-500px) translateZ(-200px) scale(0.5); z-index: 1; }
+        }
+
+        /* --- CONTAINER UTAMA --- */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: var(--glass-bg); /* Tetap perlu background gelap agar teks terbaca */
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            margin: 40px 0;
+            z-index: 100;
+            /* Border Emas Statis (Tidak Berputar) */
+            border: 2px solid var(--xmas-gold);
+            box-shadow: 0 0 20px rgba(241, 196, 15, 0.3); 
+        }
+
+        /* Hiasan Salju CSS */
+        .container::after { content: '❄️'; position: absolute; top: -15px; right: 20px; font-size: 2em; animation: spin 5s linear infinite; }
+        .container::before { content: '❄️'; position: absolute; top: -15px; left: 20px; font-size: 1.5em; animation: spin 7s linear infinite; }
+
+        .christmas-header {
+            display: flex; justify-content: center; align-items: center; margin-bottom: 10px; gap: 10px;
+        }
+        .tree-img { font-size: 2.5em; filter: drop-shadow(0 0 5px gold); }
+        .merry-text {
+            font-family: 'Arial Black', sans-serif; font-size: 1.8em; font-weight: 900;
+            text-transform: uppercase; color: var(--xmas-red);
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px #000;
+            background-image: url('https://img.freepik.com/free-vector/christmas-pattern-design_1053-294.jpg');
+            background-size: contain; -webkit-background-clip: text; color: #d63031;
+        }
+
+        .bot-logo {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--xmas-gold); box-shadow: 0 0 15px var(--xmas-red); margin: 10px 0;
+        }
+        .store-name {
+            font-size: 2em; margin: 5px 0; font-weight: 800;
+            background: linear-gradient(to right, #fff, #ffeaa7);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .promo-badge {
+            background: var(--xmas-red); color: white; padding: 5px 15px;
+            border-radius: 20px; font-weight: bold; font-size: 0.9em;
+            box-shadow: 0 0 10px red; display: inline-block; margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        /* --- GRID MENU 2x2 --- */
+        .menu-grid-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 Kolom */
+            gap: 15px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-menu {
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.2); /* Border biasa */
+            border-radius: 15px;
+            background: var(--card-bg);
+            color: white; 
+            font-size: 14px;
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-align: center;
+            height: 80px;
+        }
+        
+        .btn-menu:hover { 
+            transform: scale(1.05); 
+            background: #333; 
+            border-color: var(--xmas-gold); /* Efek hover emas simple */
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+        }
+        .btn-menu span { font-size: 1.5em; margin-bottom: 5px; }
+
+        /* --- PRICE CARDS --- */
+        .price-card {
+            background: var(--card-bg); 
+            border-radius: 15px; padding: 15px; margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); /* Border tipis */
+        }
+        
+        /* Hiasan sudut kartu */
+        .corner-decoration {
+            position: absolute; font-size: 0.7em; font-weight: 900;
+            color: rgba(255, 255, 255, 0.3); text-transform: uppercase;
+            font-family: Impact, sans-serif; pointer-events: none;
+            text-shadow: 1px 1px 0 #000; z-index: 2;
+        }
+        .top-left { top: 5px; left: 5px; transform: rotate(-15deg); color: #ffeaa7; text-shadow: 1px 1px 0 #d63031; }
+
+        .price-content { z-index: 2; text-align: left; }
+        .price-title { color: var(--xmas-gold); font-size: 1.1em; margin: 0; text-shadow: 1px 1px 2px black; }
+        .price-old { display: block; color: #aaa; text-decoration: line-through; font-size: 0.85em; margin-top: 5px; }
+        .price-new { display: block; color: #55efc4; font-weight: bold; font-size: 1.1em; text-shadow: 0 0 5px rgba(85, 239, 196, 0.5); }
+
+        .btn-buy {
+            z-index: 2; background: linear-gradient(to bottom, #d63031, #c0392b);
+            border: 2px solid white; color: white; padding: 8px 18px;
+            border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.9em;
+            box-shadow: 0 4px 0 #801d1d; transition: 0.1s;
+        }
+        .btn-buy:active { transform: translateY(4px); box-shadow: 0 0 0 #801d1d; }
+
+        /* BENEFIT BOX */
+        .benefit-box {
+            background: #2d3436;
+            padding: 15px; border-radius: 10px; margin-bottom: 25px;
+            text-align: left; border: 1px dashed var(--xmas-gold);
+        }
+        .benefit-title {
+            display: block; text-align: center; font-weight: bold;
+            color: var(--xmas-gold); margin-bottom: 10px; letter-spacing: 2px;
+            text-transform: uppercase; border-bottom: 1px solid #555; padding-bottom: 5px;
+        }
+        .benefit-list { list-style: none; padding: 0; margin: 0; font-size: 0.9em; color: #eee; }
+        .benefit-list li { margin-bottom: 6px; padding-left: 20px; position: relative; }
+        .benefit-list li::before { content: '🎁'; position: absolute; left: 0; }
+
+        .content-section { display: none; animation: fadeIn 0.5s ease; }
+        .section-header h2 { color: var(--xmas-gold); text-shadow: 0 2px 5px rgba(0,0,0,0.5); border-bottom: 1px dashed rgba(255,255,255,0.3); padding-bottom: 10px; }
+
+        /* --- INTERSTITIAL (POPUP SOSMED) --- */
+        #interstitial-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 999;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .interstitial-content {
+            text-align: center; width: 85%; max-width: 350px;
+            background: #2d3436; border: 2px solid var(--xmas-gold);
+            border-radius: 20px; padding: 30px 20px; position: relative;
+        }
+        .close-countdown {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(255,255,255,0.1); width: 35px; height: 35px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; cursor: pointer; border: 1px solid #555; color: white;
+        }
+        .social-btn {
+            display: block; background: #222; color: white; padding: 12px; margin: 8px 0;
+            border-radius: 8px; text-decoration: none; border: 1px solid #444; transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--xmas-red); border-color: white; }
+
+        /* --- MODAL PAYMENT --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: #2d3436; padding: 25px; border-radius: 15px;
+            width: 350px; max-width: 90%; text-align: center;
+            border: 2px solid var(--xmas-gold); position: relative;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .close-modal {
+            position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #aaa;
+        }
+        .qris-container { 
+            position: relative; padding: 10px; border-radius: 12px; margin: 15px auto; width: 200px;
+            background: white; /* Background putih bersih untuk QRIS */
+        }
+        .qris-img { width: 100%; display: block; border-radius: 8px; }
+        
+        .total-price { font-size: 1.8em; font-weight: bold; color: #55efc4; margin: 10px 0; }
+        
+        .copy-box {
+            background: #1e272e; padding: 10px; border-radius: 8px; margin: 10px 0;
+            font-family: monospace; font-size: 1.2em; cursor: pointer;
+            border: 1px dashed #7f8fa6; transition: 0.2s; color: #fff;
+        }
+        .copy-box:active { background: #353b48; transform: scale(0.98); }
+        
+        .warning-text { font-size: 0.8em; color: #ff6b81; margin-top: 5px; font-style: italic; }
+
+        .btn-confirm {
+            background: #0984e3; color: white; padding: 12px; border-radius: 8px;
+            width: 100%; border: none; font-weight: bold; margin-top: 15px; cursor: pointer; font-size: 1em;
+        }
+
+        .method-list { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .btn-method {
+            padding: 10px; border: 1px solid #555; background: #2f3640; color: white;
+            border-radius: 8px; cursor: pointer; text-align: left; display: flex; justify-content: space-between;
+        }
+        .btn-method:hover { background: #353b48; border-color: var(--xmas-gold); }
+        
+        .btn-back { background: transparent; border: 1px solid #777; color: #aaa; padding: 8px 20px; border-radius: 20px; cursor: pointer; margin-top: 20px; display: inline-block;}
+        
+        .scroll-selector-container { height: 250px; overflow-y: scroll; background: #111; border: 1px solid #444; border-radius: 10px; margin: 15px 0; }
+        .scroll-item { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: #ccc; }
+        .scroll-item:hover { background: #333; color: white; }
+        .scroll-item.special { color: var(--xmas-gold); font-weight: bold; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="stars-container">
+    <div class="star-small"></div><div class="star-medium"></div><div class="star-large"></div>
+</div>
+
+<div class="santa-orbit-container">
+    <img src="https://api-faa.my.id/faa/cdn/1_rl5.png" alt="Santa Clause" class="santa-sleigh">
+</div>
+
+<div id="interstitial-modal">
+    <div class="interstitial-content">
+        <div class="close-countdown" id="countdown-display">3</div>
+        <img src="https://uploader.zenzxz.dpdns.org/uploads/1764871685819.jpeg" class="bot-logo" style="width:70px; height:70px; margin:0 auto 15px auto;">
+        <h3 style="color:var(--xmas-gold); margin:0 0 10px 0;">Merry Christmas!</h3>
+        <p style="color:#aaa; font-size:0.85em; margin-bottom:20px;">Jangan lupa follow sosial media kami untuk update terbaru.</p>
+        
+        <div id="social-links-container" style="display:none;">
+            <a href="https://www.instagram.com/elaraai__" target="_blank" class="social-btn">📷 Instagram</a>
+            <a href="https://www.tiktok.com/@fariel_bot" target="_blank" class="social-btn">🎵 TikTok</a>
+            <a href="https://chat.whatsapp.com/HqYS4bZEyLU4OiDnw8XDcH" target="_blank" class="social-btn">🤖 Group Chat</a>
+            <a href="https://chat.whatsapp.com/B91PwvLrTiS4OZtP747EMF" target="_blank" class="social-btn">🛍 Group Store</a>
+            <a href="https://whatsapp.com/channel/0029Vb6p7345a23vpJBq3a1h" target="_blank" class="social-btn">📢 Channel Update</a>
+            <a href="https://whatsapp.com/channel/0029Vb6B91zEVccCAAsrpV2q" target="_blank" class="social-btn">🛒 Channel Testimoni</a>
+        </div>
+        
+        <button onclick="showSocials()" id="visit-btn" style="background:var(--xmas-red); color:white; border:none; padding:10px 25px; border-radius:20px; font-weight:bold; cursor:pointer;">Lihat Medsos</button>
+    </div>
+</div>
+
+<div class="container">
+    <div id="main-menu">
+        <div class="christmas-header">
+            <span class="tree-img">🎄</span>
+            <span class="merry-text">MERRY<br>CHRISTMAS</span>
+            <span class="tree-img">🎄</span>
+        </div>
+
+        <img src="https://uploader.zenzxz.dpdns.org/uploads/1764871685819.jpeg" alt="Logo Elara" class="bot-logo">
+        <h1 class="store-name">Elara Store</h1>
+        <div class="promo-badge">🎅 PROMO SPESIAL NATAL - DISKON 60%</div>
+        
+        <p style="color:#ddd; font-style:italic; font-size:0.9em; margin-bottom:25px;">
+            Rayakan Natal dengan fitur bot terbaik! Harga hancur lebur khusus event Natal.
+        </p>
+
+        <div class="menu-grid-wrapper">
+            <button class="btn-menu" onclick="triggerSection('premium')">
+                <span>✨</span> PREMIUM BOT
+            </button>
+            <button class="btn-menu" onclick="triggerSection('sewa')">
+                <span>🛍️</span> SEWA BOT
+            </button>
+            <button class="btn-menu" onclick="triggerSection('vvip')">
+                <span>🎁</span> SEWA VVIP
+            </button>
+            <button class="btn-menu" onclick="triggerSection('reaction')">
+                <span>📲</span> REACTION SALURAN
+            </button>
+        </div>
+    </div>
+
+    <div id="section-premium" class="content-section">
+        <div class="section-header">
+            <h2>✨ PREMIUM BOT (60% OFF)</h2>
+        </div>
+        
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">15 Days</h4>
+                <span class="price-old">Rp5.000</span>
+                <span class="price-new">Rp2.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Premium Bot 15 Days', 2000)">BELI 🎅</button>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">30 Days</h4>
+                <span class="price-old">Rp10.000</span>
+                <span class="price-new">Rp4.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Premium Bot 30 Days', 4000)">BELI 🎅</button>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">60 Days</h4>
+                <span class="price-old">Rp20.000</span>
+                <span class="price-new">Rp8.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Premium Bot 60 Days', 8000)">BELI 🎅</button>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">Permanen</h4>
+                <span class="price-old">Rp30.000</span>
+                <span class="price-new">Rp12.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Premium Bot Permanen', 12000)">BELI 🎅</button>
+        </div>
+
+        <div class="benefit-box">
+            <span class="benefit-title">BENEFITS</span>
+            <ul class="benefit-list">
+                <li>Get Unlimited Limit</li>
+                <li>Get Access All Fitur</li>
+                <li>Get Access Private Message</li>
+                <li>Free Request Features</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="goBack()">⬅ Kembali</button>
+    </div>
+
+    <div id="section-sewa" class="content-section">
+        <div class="section-header">
+            <h2>🛍️ SEWA BOT (60% OFF)</h2>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">7 Days</h4>
+                <span class="price-old">Rp7.000</span>
+                <span class="price-new">Rp2.800</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Sewa Bot 7 Days', 2800)">BELI 🎅</button>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">30 Days</h4>
+                <span class="price-old">Rp15.000</span>
+                <span class="price-new">Rp6.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Sewa Bot 30 Days', 6000)">BELI 🎅</button>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">Permanen</h4>
+                <span class="price-old">Rp50.000</span>
+                <span class="price-new">Rp20.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Sewa Bot Permanen', 20000)">BELI 🎅</button>
+        </div>
+
+        <div class="benefit-box">
+            <span class="benefit-title">BENEFITS</span>
+            <ul class="benefit-list">
+                <li>Feature Groups</li>
+                <li>Antilink, Welcome, Hidetag</li>
+                <li>Store List & Promote/Demote</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="goBack()">⬅ Kembali</button>
+    </div>
+
+    <div id="section-vvip" class="content-section">
+        <div class="section-header">
+            <h2>🎁 SEWA VVIP (60% OFF)</h2>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">7 Days</h4>
+                <span class="price-old">Rp10.000</span>
+                <span class="price-new">Rp4.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Sewa VVIP 7 Days', 4000)">BELI 🎅</button>
+        </div>
+        
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">30 Days</h4>
+                <span class="price-old">Rp20.000</span>
+                <span class="price-new">Rp8.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Sewa VVIP 30 Days', 8000)">BELI 🎅</button>
+        </div>
+
+        <div class="price-card">
+            <div class="corner-decoration top-left">DISKON 60%</div>
+            <div class="price-content">
+                <h4 class="price-title">Permanen</h4>
+                <span class="price-old">Rp60.000</span>
+                <span class="price-new">Rp24.000</span>
+            </div>
+            <button class="btn-buy" onclick="openPayment('Sewa VVIP Permanen', 24000)">BELI 🎅</button>
+        </div>
+
+        <div class="benefit-box">
+            <span class="benefit-title">BENEFITS</span>
+            <ul class="benefit-list">
+                <li>Access All Premium Features</li>
+                <li>Unlimited Limit For Members</li>
+                <li>All Sewa Features Included</li>
+            </ul>
+        </div>
+        <button class="btn-back" onclick="goBack()">⬅ Kembali</button>
+    </div>
+
+    <div id="section-reaction" class="content-section">
+        <div class="section-header">
+            <h2>📲 REACTION SALURAN</h2>
+        </div>
+
+        <div class="benefit-box">
+            <ul class="benefit-list">
+                <li>Bebas Request Emoji</li>
+                <li>Proses Cepat</li>
+                <li>Pilih Jumlah Pesan (10 - Unlimited)</li>
+            </ul>
+        </div>
+
+        <div class="price-card">
+            <div class="price-content">
+                <h4 class="price-title">Pilih Paket Reaction</h4>
+                <span class="price-new">Mulai Rp10.000</span>
+            </div>
+            <button class="btn-buy" onclick="openReactionSelector()">PILIH 🎅</button>
+        </div>
+        <button class="btn-back" onclick="goBack()">⬅ Kembali</button>
+    </div>
+
+</div>
+
+<div id="reactionSelectorModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeReactionSelector()">&times;</span>
+        <h3 style="color:var(--xmas-gold)">Pilih Jumlah Pesan</h3>
+        <p style="font-size:0.8em; color:#aaa;">Pilih paket (Skala 10)</p>
+        
+        <div class="scroll-selector-container">
+            <div id="scroll-content"></div>
+        </div>
+        
+        <button class="btn-back" onclick="closeReactionSelector()">Batal</button>
+    </div>
+</div>
+
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closePayment()">&times;</span>
+        
+        <div id="payment-details">
+            <h3 style="color:var(--xmas-gold); margin-top:0;">SCAN QRIS</h3>
+            <div class="qris-container">
+                <img src="https://files.catbox.moe/yx15kb.jpg" alt="QRIS Payment" class="qris-img">
+            </div>
+            
+            <p style="margin:5px 0; color:#ddd;">Total Bayar (Termasuk Admin):</p>
+            <div class="total-price" id="display-price">Rp0</div>
+            
+            <p style="font-size:0.9em; margin-top:10px; color:#aaa;">Atau Transfer ke Nomor E-Wallet (Dana/Gopay/dll):</p>
+            
+            <div class="copy-box" onclick="copyNumber()">
+                08983999939
+                <div id="copy-status" style="font-size:0.6em; color:#55efc4;">(Klik untuk Salin)</div>
+            </div>
+
+            <p class="warning-text">
+                ⚠️ Harap Cek Ulang Nomor Sebelum Transfer dan Kirim Bukti Transfer Ke Owner!
+            </p>
+
+            <button class="btn-confirm" onclick="showMethodSelector()">📞 Kirim Bukti Transfer</button>
+        </div>
+
+        <div id="method-selector" style="display:none;">
+            <h3 style="color:var(--xmas-gold)">PILIH METODE PEMBAYARAN</h3>
+            <p style="font-size:0.9em; color:#aaa; margin-bottom:15px;">Yang anda gunakan saat transfer:</p>
+            
+            <div class="method-list" style="display:flex;">
+                <div class="btn-method" onclick="sendToWA('QRIS')">
+                    <span>QRIS (All Payment)</span> <span>📲</span>
+                </div>
+                <div class="btn-method" onclick="sendToWA('Dana')">
+                    <span>Dana</span> <span>🔵</span>
+                </div>
+                <div class="btn-method" onclick="sendToWA('Gopay')">
+                    <span>Gopay</span> <span>🟢</span>
+                </div>
+                <div class="btn-method" onclick="sendToWA('ShopeePay')">
+                    <span>ShopeePay</span> <span>🟠</span>
+                </div>
+                <div class="btn-method" onclick="sendToWA('SeaBank')">
+                    <span>SeaBank</span> <span>🏦</span>
+                </div>
+            </div>
+            <button class="btn-back" onclick="hideMethodSelector()" style="width:100%; margin-top:15px;">⬅ Kembali</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- VARIABLES ---
+    let selectedItemName = "";
+    let finalPrice = 0;
+    let targetSectionId = "";
+
+    // --- MUSIC PLAYER ---
+    const playlist = [
+        "https://uploader.zenzxz.dpdns.org/uploads/1766630669228.mpga",
+        "https://uploader.zenzxz.dpdns.org/uploads/1766630805841.mpga",
+        "https://uploader.zenzxz.dpdns.org/uploads/1766630859444.mpga",
+        "https://uploader.zenzxz.dpdns.org/uploads/1766630985178.mpga"
+    ];
+    let currentSongIndex = 0;
+    let audio = new Audio();
+
+    function playNextSong() {
+        currentSongIndex++;
+        if (currentSongIndex >= playlist.length) currentSongIndex = 0;
+        audio.src = playlist[currentSongIndex];
+        audio.play().catch(e => console.log("Autoplay waiting interaction"));
+    }
+
+    audio.src = playlist[0];
+    audio.onended = playNextSong;
+
+    window.addEventListener('load', () => {
+        audio.play().catch(() => {
+            document.body.addEventListener('click', () => {
+                if (audio.paused) audio.play();
+            }, { once: true });
+        });
+    });
+
+    // --- INTERSTITIAL LOGIC ---
+    function triggerSection(sectionId) {
+        targetSectionId = sectionId;
+        const interstitial = document.getElementById('interstitial-modal');
+        const countdownDisplay = document.getElementById('countdown-display');
+        const mainMenu = document.getElementById('main-menu');
+        
+        document.getElementById('social-links-container').style.display = 'none';
+        document.getElementById('visit-btn').style.display = 'inline-block';
+        
+        mainMenu.style.display = 'none';
+        interstitial.style.display = 'flex';
+        
+        let count = 3;
+        countdownDisplay.innerHTML = count;
+        countdownDisplay.onclick = null;
+        
+        const timer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownDisplay.innerHTML = count;
+            } else {
+                clearInterval(timer);
+                countdownDisplay.innerHTML = "✖";
+                countdownDisplay.style.background = "#d63031";
+                countdownDisplay.onclick = function() { closeInterstitial(); };
+            }
+        }, 1000);
+    }
+
+    function showSocials() {
+        document.getElementById('visit-btn').style.display = 'none';
+        document.getElementById('social-links-container').style.display = 'block';
+    }
+
+    function closeInterstitial() {
+        document.getElementById('interstitial-modal').style.display = 'none';
+        document.getElementById('section-' + targetSectionId).style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    function goBack() {
+        document.querySelectorAll('.content-section').forEach(el => el.style.display = 'none');
+        document.getElementById('main-menu').style.display = 'block';
+    }
+
+    // --- PAYMENT & COPY LOGIC ---
+    function openPayment(itemName, price) {
+        finalPrice = price + 2000; 
+        selectedItemName = itemName;
+        
+        document.getElementById('payment-details').style.display = 'block';
+        document.getElementById('method-selector').style.display = 'none';
+        document.getElementById('display-price').innerText = "Rp" + finalPrice.toLocaleString('id-ID');
+        document.getElementById('paymentModal').style.display = 'flex';
+    }
+
+    function closePayment() {
+        document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    function copyNumber() {
+        navigator.clipboard.writeText("08983999939");
+        document.getElementById("copy-status").innerText = "✅ Nomor berhasil disalin!";
+        setTimeout(() => document.getElementById("copy-status").innerText = "(Klik untuk Salin)", 2000);
+    }
+
+    function showMethodSelector() {
+        document.getElementById('payment-details').style.display = 'none';
+        document.getElementById('method-selector').style.display = 'block';
+    }
+
+    function hideMethodSelector() {
+        document.getElementById('method-selector').style.display = 'none';
+        document.getElementById('payment-details').style.display = 'block';
+    }
+
+    function sendToWA(method) {
+        const phone = "6285363681987";
+        let message = `👋🏻 Hai Min, Mau Order ${selectedItemName}\n\n`;
+        message += `💸 Total Transfer: Rp${finalPrice.toLocaleString('id-ID')}\n`;
+        message += `💳 Metode: ${method}\n\n`;
+        message += `Mohon segera diproses ya! (Sudah transfer)`;
+
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+        closePayment();
+    }
+
+    // --- REACTION LOGIC ---
+    function openReactionSelector() {
+        const modal = document.getElementById('reactionSelectorModal');
+        const content = document.getElementById('scroll-content');
+        content.innerHTML = '';
+
+        for (let i = 10; i <= 50; i += 10) {
+            let div = document.createElement('div');
+            div.className = 'scroll-item';
+            div.innerText = i + " Pesan (Rp" + (i * 1000).toLocaleString('id-ID') + ")";
+            let cost = i * 1000; 
+            div.onclick = function() { selectReaction(i + " Pesan", cost); };
+            content.appendChild(div);
+        }
+
+        let unli = document.createElement('div');
+        unli.className = 'scroll-item special';
+        unli.innerText = "⭐ UNLIMITED (Rp30.000)";
+        unli.onclick = function() { selectReaction("Reaction Unlimited", 30000); };
+        content.appendChild(unli);
+
+        modal.style.display = 'flex';
+    }
+
+    function closeReactionSelector() {
+        document.getElementById('reactionSelectorModal').style.display = 'none';
+    }
+
+    function selectReaction(name, cost) {
+        closeReactionSelector();
+        openPayment("Reaction Saluran " + name, cost);
+    }
+
+    window.onclick = function(e) {
+        if(e.target == document.getElementById('paymentModal')) closePayment();
+        if(e.target == document.getElementById('reactionSelectorModal')) closeReactionSelector();
+    }
+</script>
+
+</body>
+</html>
